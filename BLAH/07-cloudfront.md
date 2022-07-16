@@ -1,0 +1,1 @@
+* Cloudfront signed URL is used for giving private access to ONE file, whereas Signed cookies are used to give access to multiple files
