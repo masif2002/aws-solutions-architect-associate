@@ -62,7 +62,7 @@
 ## EC2 Nitro
 
 - EC2 Nitro is a label for EC2 instances that use new virtualization technology
-- EC2 Nitr0 = Better Performance, Better Security, Better Network
+- EC2 Nitro = Better Performance, Better Security, Better Network
 - EC2 nitro instances offer high IOPS EBS Volumes
   - Upto 64,000 IOPS for nitro instances whereas only 32,000 IOPS for non-nitro EC2 instances
 

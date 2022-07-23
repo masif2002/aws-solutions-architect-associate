@@ -8,7 +8,7 @@
     * This can be useful when you create a new EC2 instance but attach the old EBS volume to have the old data back
     * Delete on Termination is checked by default for root EBS volumes. ie- root EBS volumes are deleted on termination 
     * Whereas, non-root volumes are not deleted on termination, by default
-    * Root volumes loose their delete on termination attribute when they are detached (DOT becomed 'No')
+    * Root volumes loose their **D**elete **O**n **T**ermination attribute when they are detached (DOT becomes 'No')
 * One EC2 instance can have multiple EBS volumes attached to it
 * But, one EBS volume can be attached to only one instance at a time
     * However, there are multi-attach feature for some EBS volumes
@@ -29,7 +29,7 @@
 * Archive Tier
     * EBS Snapshots that are not used often can be moved to the archive tier
     * This tier has better cost savings (75% cheaper)
-    * Takes about 24 to 72 hours for retrieveing the snapshots
+    * Takes about 24 to 72 hours for retrieving the snapshots
 * Recycle Bin
     * Policies can be created to retain snapshots after accidental deletion
     * Snapshots can be retained anywhere from 1 day to 1 year
@@ -142,7 +142,7 @@ OR
 * Security groups are set up to control access to EFS
 * EFS is compatible only with Linux AMI
 * EFS uses POSIX based file system (~LINUX)
-* Can be ecnrypted at rest using KMS
+* Can be encrypted at rest using KMS
 * Automatic Backups available (Additional Pricing)
 
 ### EFS Performance

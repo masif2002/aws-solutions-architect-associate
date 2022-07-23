@@ -4,11 +4,11 @@
 * Increasing the size of the instances (ie- increase in RAM and vCPUs )
 * Ex: from t2.micro to t3.2xlarge (doesn't have to be the same instance family)
 * In vertical scaling, you scale up/down
-* Vertical scaling usually happens in databases, to handle high workloads as ypur application grows
+* Vertical scaling usually happens in databases, to handle high workloads as your application grows
 ### Horizontal Scaling (aka Elasticity)
 * Increasing the no. of instances
 * In horizontal scaling, you scale out/in
-* Ex: ASG scaling out EC2 instances to match workload for your web application
+* Ex: ASG scaling out EC2 instances to match increased workload for your web application
 ### High Availability
 * An application is said to be highly available if it is running on multiple AZs
 * The goal of high availability is to survive a data centre loss
@@ -16,8 +16,8 @@
 ## Elasting Load Balancing (ELB)
 * Load balancers are servers that balance the load (or traffic) it receives, among the backend EC2 instances (or servers) in multiple AZs
     * It exposes as a single point of access (DNS) for the users
-    * It allows to seamlessly handle failure of instances 
-    * It performs health checks. It only forwards traffic to healthy EC2 instances  
+    * It performs health checks.   
+    * It allows to seamlessly handle failure of instances (by only forwarding traffic to healthy EC2 instances)
     * Can enforce stickiness with cookies
 * You can also set up your own Load balancer in AWS which doesn't cost much but it you need to put more effort
 * An Elastic Load Balancer is an AWS managed Load balancer. So, AWS takes care of the upgrades and maintenance. And it is integrated with a ton of AWS services
@@ -66,7 +66,7 @@
 <br/><br/>
 * Health checks in ALB happens at target-group level
 <br/><br/>
-* The backend servers (EC2 instances) running behind the ALB don't have access to the client IP. But they can be found in the headers of the HTTP request
+* The backend servers (EC2 instances) running behind the ALB don't have access to the client IP. But they can be found in the headers of the HTTP request (from the ALB to the machine)
     * `X-forwarded-for` contains client IP
     * `X-forwarded-port` contains the port
     * `X-forwarded-proto` contains the protocol
@@ -74,7 +74,7 @@
 ## Network Load Balancer
 * Layer 4 load balancer 
 * Handles millions of request per second
-* Low-latency (ALB has slightlu higher latency)
+* Low-latency (ALB has slightly higher latency)
 * Provides the feature to have a static IP per AZ (Elastic IP)
     * Helpful for whitelisting IPs
 
@@ -137,7 +137,7 @@
 
 ## SSL Certificates
 * SSL -> Secure Socket Layer; TLS -> Transport Layer Security (Newer version of SSL)
-* SSL certificates are attached to the ELBs which is then used to encrpyt traffic between the client and the load balancer (in-flight encryption)
+* SSL certificates are attached to the ELBs which is then used to encrypt traffic between the client and the load balancer (in-flight encryption)
 * Public SSL certificates are issued by Certificate Authorities (CA) like GoDaddy
 * SSL certificates have a expiration date that you set and must be renewed regularly 
 * The load balancer uses the X.509 certificate
@@ -149,6 +149,7 @@
     * can specify Security policies to support older versions of TLS/SSL    
 ### SNI
 * Server Name Indication
+* SNI allows you to expose multiple HTTPS applications each with its own SSL certificate on the same listener
 * SNI is used by client to load the right SSL certificate for the hostname it wants to connect, from multiple hostnames in the webserver
 * Only works for ALB, NLB and CloudFront. Not for CLB
 <br></br>
@@ -160,7 +161,7 @@
     * Uses SNI for accessing the right certificate
 
 ## Connection Draining
-* Connection Draining is when the load balancers wait for the in-flight connection (connection betwwen the client and the EC2 instance) to complete before de-registering the instance from the target group 
+* Connection Draining is when the load balancers wait for the in-flight connection (connection between the client and the EC2 instance) to complete before de-registering the instance from the target group 
 * During the _draining_ period, no new connections are sent to the EC2 instances by the load balancer
 * The duration for the draining period is set to 300s by default, however you can specify any value from 1s-3600s
 * It is called _**connection draining**_ in CLB and _**deregistration delay**_ in ALB and NLB
@@ -193,7 +194,7 @@
     * Ex: Scaling out to specified capacity at 9am to 5pm every Sunday
 ### Predictive Scaling
 * Scales according to a forecast that is created from previous data
-* So, here.. scaling actions ahead of time
+* So, here.. scaling actions happen ahead of time
 
 ### Scaling cooldown   
 * After a scaling activity by ASG, the ASG enters into cooldown period
@@ -214,7 +215,7 @@
 > While terminating, ASG tries to balance the number of EC2 instances across AZ by default  
 
 ## Lifecycle Hooks
-* With lifecyle hooks enabled (and defined), when an instance is created by an ASG and it is in the pending state, the instances move to an intermidate state (internally) where different operations can be performed
+* With lifecyle hooks enabled (and defined), when an instance is created by an ASG and it is in the pending state, the instances move to an intermediate state (internally) where different operations can be performed
     * Operations like installing software, running tests and more according to your application
 * And similarly, when an instance is stopped by an ASG, it moves to an intermediate state (internally) before terminating where you can perform any operation in the EC2 instance
     * Example: Recovering log files before the instance is deleted

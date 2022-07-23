@@ -3,6 +3,7 @@
 * It is not the best practice to use the root account, or share the account for accessing AWS
 * It is preferred to create users in IAM and give the users, permissions
 * IAM permissions are nothing but JSON policies attached to Users or Groups
+    * An inline-policy is the policy directly attached to a user 
 * Groups are formed by grouping users together
     * A user can belong to multiple groups
     * At the same time, it is also not necessary that a user should belong to a group
@@ -23,7 +24,7 @@
     * Action: List of actions that the policy allows the principal to perform
     * Resource: Resource on which the actions are performed 
     * Condition: Conditions on when the policy should be active (optional)
-
+> a
 ## Securing AWS Accounts
 * There are two mechanisms for securing your AWS accounts
 * First one, is to create a strong password policy
@@ -52,12 +53,13 @@
 * AWS CLI is a tool that allows users to access AWS through the command line. It also provides access to the public APIs provided by AWS services
 
 * AWS SDK (Software Development Kit) is a set of libraries embedded in your application that provides access to AWS. 
-    * Other than programmin glanguages it also supports Mobile SDKs and IoT SDKs
+    * Other than programming languages it also supports Mobile SDKs and IoT SDKs
 
 ## AWS CloudShell 
 * Cloudshell is a terminal in AWS console that is free to use
 * All the files that is created in the cloudshell environment is retained even when cloudShell is restarted
 * You can upload/download files from/to the CloudShell environment
+> Don't confuse this with EC2 instance connect
 
 ## IAM Roles
 * An IAM Role is created for AWS Services to use AWS resources on our behalf
@@ -67,7 +69,7 @@
 
 ## IAM Security Tools
 * IAM Credentials Report (account-level)
-    * SHows the list of users and status of their credentials
+    * Shows the list of users and status of their credentials
 * IAM Access Advisor (user-level)
     * SHows the services that has been acessed by ther users and when they were last accessed
     * Used to revise IAM policies if needed (applying _least privilege principle_)
@@ -78,3 +80,8 @@
 * Use strong password policy and enable MFA
 * Assign Users to groups and add permissions to groups rather than assigning permissions directly to the user
 * Audit (analayze) permissions of your account using Credentials Report
+
+## Extra Notes
+![](img/deny.png)  
+* Explicit DENY: When there is a DENY statement in the policy
+* Implicit DENY: When a DENY statement is not present but at the same time an ALLOW is not present aswell

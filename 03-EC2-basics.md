@@ -31,7 +31,7 @@ t2.micro
 ```
 * Here, `t` denotes the class of EC2 instance
 * `2` denotes the generation (or version). There could be newer generations in the future
-* `micro` is the size of the instance. It could be anything like `large`, 'small`, `2xlarge`
+* `micro` is the size of the instance. It could be anything like `large`, `small`, `2xlarge`
 
 ## Security Groups
 * It's basically a firewall for EC2 instances
@@ -70,7 +70,7 @@ t2.micro
 * Reserved Instances
     * 1 or 3 years commitment; 
     * Here, you reserve Instance type, Region, tenancy, OS
-    * High DIscount | full upfront > partial upfront > no upfront | Low Discount
+    * High Discount | full upfront > partial upfront > no upfront | Low Discount
     * _Convertible Reserved Instance_ option available, where instance type, instance family, region, tenancy can be changed 
 * Savings Plan
     * 1 or 3 years commitment;
@@ -86,7 +86,7 @@ t2.micro
     * Complete physical server dedicated to use
     * Controls instance placement
     * Reserving options available for more discount
-    * This option allows to user server-bound software licenses 
+    * This option allows to use server-bound software licenses 
 * Dedicated Instances
     * Instances run on dedicated hardware
     * Hardware may be shared with instances in the same account
@@ -118,15 +118,37 @@ t2.micro
 * If the request type is Persistent, then the Spot Request keeps on requesting for spot instances once the instances are terminated. 
     * So, if you need to actually stop an instance, you need to cancel the spot request first and then stop the instances
     * Because, if you stop the instance first, the request is automatically going to request another instance
-    * And cancelling a spot request does not terminate spor instances. You need to terminate them seperately 
+    * And cancelling a spot request does not terminate spot instances. You need to terminate them seperately 
 * Whereas, if the request type is 'one-time', then it only requests for spot requests once until the request is satisfied
 
 ### Spot Fleet
 * Spot Fleet = Spot instances + On-demand instances
 * You define a number of launch pools for Spot fleet to choose from
-    * Launch pools consists of variations of OS, AZ, Instance type (M5 large)
+    * Launch pools consists of variations of OS, AZ, Instance type (Ex: M5 large)
 * Spot fleet chooses from the best launch pool according to the launch strategy and meet the target capacity
 * Launch startegies can be
     * lowestPrice: Launches from the optimal pool which provides the lowest price
     * Diversified: Launches from multiple pools
     * capacityOptimized: Pool with optimal capacity   
+
+## Extra Notes
+### Burstable performance instances
+* low-to-moderate CPU utilization workloads lead to wastage of CPU cycles and, as a result, you pay for more than you use.
+* To overcome this, you can leverage the low-cost burstable general purpose instances are the T instances.
+* The T instance family provides a baseline CPU performance with the ability to burst above the baseline at any time for as long as required. 
+* This ensures that you pay only for baseline CPU plus any additional burst CPU usage resulting in lower compute costs 
+* The EC2 burstable instances consist of T4g, T3a and T3 instance types, and the previous generation T2 instance types.
+    * T4G instances provide the best price for performance, and provide you with the lowest cost of all the EC2 instance types. The T4g instance types are powered by Arm-based AWS Graviton2 processors
+    * T3a has AMD Processors and T2 has Intel Processors
+> https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html 
+### CPU Credits
+* Each burstable performance instance continuously earns credits when it stays below the CPU baseline, and continuously spends credits when it bursts above the baseline.
+    * If the CPU utilization is equal to baseline, then credits earned are equal to credits spent.
+```
+When the credits earned are greater than credits spent, then the difference is called accrued credits, which can be used later to burst above baseline CPU utilization. Similarly, when the credits spent are more than credits earned, then the instance behavior depends on the credit configuration mode—Standard mode or Unlimited mode.
+
+In Standard mode, when credits spent are more than credits earned, the instance uses the accrued credits to burst above baseline CPU utilization. If there are no accrued credits remaining, then the instance gradually comes down to baseline CPU utilization and cannot burst above baseline until it accrues more credits.
+
+In Unlimited mode, if the instance bursts above baseline CPU utilization, then the instance first uses the accrued credits to burst. If there are no accrued credits remaining, then the instance spends surplus credits to burst. When its CPU utilization falls below the baseline, it uses the CPU credits that it earns to pay down the surplus credits that it spent earlier. The ability to earn CPU credits to pay down surplus credits enables Amazon EC2 to average the CPU utilization of an instance over a 24-hour period. If the average CPU usage over a 24-hour period exceeds the baseline, the instance is billed for the additional usage at a flat additional rate per vCPU-hour.
+```
+> https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
