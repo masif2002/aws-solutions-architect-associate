@@ -64,6 +64,7 @@
 * Incase of an AZ failure, the failover takes place to the standby instance in the other AZ
 * The application only talks to a single DNS endpoint, so there is no downtime
 * The standby DB is only for standby, not used for scaling
+* Multi-AZ keeps the same connection string regardless of which database is up
 * **Read Replicas also can be set-up as multi-AZ for Disaster Recovery**
 ![](img/multi-az.png)  
 <br></br>
@@ -198,6 +199,69 @@ Benefits
     * Amazon Comprehend (for sentiment analysis)
 * Allows you to add ML-based prediction for your applications
 * No need for ML experience
-* Use Cases: Fraud detection, sentimet analysis, personalized experiences, ads targetting..
+* Use Cases: Fraud detection, sentiment analysis, personalized experiences, ads targetting..
 
 ![](img/aurora-ml.png)  
+
+## Amazon Elasticache
+* Just like we have RDS to get a managed relational database, we have ElastiCache to get managed Redis or Memcache
+* Caches are in-memory databases that provide high performanc and low latency. Helps you reduce load off your databases for read intensive workloads
+* Makes your application stateless
+* Automatic OS patching, Backup & Recovery, Detailed Monitoring
+* If you need to use ElastiCache, you should make changes to your application code 
+### General Architecture
+* The recent queries are stored in the cache
+* So, first we check the cache for the query, if it is present we use it (cache hit)
+* If it is not present in the cache (cache miss), we fetch it from the database and write it to cache so that the recent query is in the cache
+* This method is called lazy loading
+* Cache must have an invalidation strategy to make sure only the most current data is used in there
+![](img/cache-archi.png)  
+### Session data Architecture
+* ElastiCache is also used to store user session data 
+* When a user logs into a EC2 instance, the session data is written to ElastiCache
+* Then, later when the same user is redirected to a different EC2 instance, the session data of the user is fetched from Elasticache
+* So, this way the user does not have to log in again 
+![](img/session-data.png)  
+### Redis vs MemCached
+* Redis
+    * Multi-AZ with Auto-Failover
+    * Read Replicas to scale reads and have high availability
+    * Backup and restore features
+    * Data Durability (Using AOF Persistence)
+* Memcached
+    * Multi-node for partitioning of data (sharding)
+    * No availability (replication)
+    * Non persistent. No backups
+    * Multi-threaded arechitecture
+
+## ElastiCache - Cache Security
+* All caches in elastiCache do not support IAM authentication
+    * IAM policies can only be used at AWS level. ie- creating and deleting clusters..
+* Redis AUTH token is used for logging into the cache system
+    * You can create a password/token when creating a Redis Cluster
+    * Redis also has Security Groups attached to it
+    * Can enforce in-flight encryption using SSL
+* Memcached uses SASL-based authentication (advanced)
+
+## ElastiCache Patterns for loading data
+### Lazy Loading
+* The data that is read from the DB is stored in the cache. The data can become stale
+* The data becomes stale because there are no updates to the cache when data is changed in the database
+### Write through
+* The data is added/updated into the cache everytime the data is written to the DB (no stale data)
+* Because the data in the cache is updated every time it's written to the database, the data in the cache is always current.
+### Session Store
+* Stores temporary session data in cache (with TTL)
+> TTL: Time to Live. Data expires after the given time
+
+## Redis Use Case
+* For Gaming leaderboards
+* Redis has a feature called _Redis Sorted Sets_ that has unique elements and also in ranked order
+
+## RDS Database Ports
+* PostgreSQL: 5432
+* MySQL: 3306
+* Oracle RDS: 1521
+* MSSQL Server: 1433
+* MariaDB: 3306 (same as MySQL)
+* Aurora: 5432 (PostgreSQL) or 3306 (MySQL)
