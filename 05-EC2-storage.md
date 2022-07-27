@@ -23,7 +23,7 @@
 * EBS snapshots can be moved across AZs and Regions from which EBS volumes can be easily restored
 * It is not necessary to detach the EBS volumes before taking snapshots but, is recommended
     * You can only detach a root EBS volume when the instance is stopped. Force-detach also wont work
-    * You can only force-detach a non-root EBS volumes while the EC2 instance is running, but not preferred
+    * You can only force-detach a non-root EBS volume (while the EC2 instance is running, but not preferred)
 
 ### EBS Snapshot Features
 * Archive Tier

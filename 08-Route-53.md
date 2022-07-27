@@ -25,7 +25,7 @@
 * Provides 100% availability SLA 
     * SLA: Service Level Agreement  
     * _100% availability SLA_ means that Route 53 is 100% available service. If it is not available anytime, you get some credits based on the agreement
->` 53 is a reference to a traditional DNS port. So hence the name Route 53
+> 53 is a reference to a traditional DNS port. So hence the name Route 53
 ### Route 53 - Records
 * Each record determines how you want to route traffic for a domain
 * A DNS Record contains the following

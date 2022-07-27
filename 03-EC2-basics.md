@@ -38,7 +38,7 @@ t2.micro
 * It controls the incoming traffic and outgoing traffic from/to the EC2 instances
 * But it lives outside the EC2 instances, so if a traffic is blocked, an EC2 instance would not even see it
 * SG contains only _allow_ rules
-    * All inbound traffic is blocked by default
+    * All inbound traffic is blocked by default (meaning there is no allow rule)
     * All outgoing traffic is allowed by default
 * If you're launching a web application in an EC2 instance, and you're seeing a timeout error, it means that it is a SG issue
     * If it's a connection refused error, then it's an application issue 
